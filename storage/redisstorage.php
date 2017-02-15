@@ -4,8 +4,6 @@ namespace monitor\storage;
 require_once __DIR__ . "/../interfaces/istorage.php";
 
 class RedisStorage implements IStorage{
-	const MKEY_DELIMITER = ".";
-
 	private $prefix;
 
 	private $redis;

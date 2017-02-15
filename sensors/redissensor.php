@@ -30,7 +30,7 @@ class Redis implements ISensor{
 
 			return [
 				self::CONN	=>	$info["connected_clients"]	,
-				self::MEM	=>	$info["used_memory"]		,
+				self::MEM	=>	self::mb_($info["used_memory"])	,
 			];
 		}catch(\RedisException $e){
 			return [
@@ -40,5 +40,8 @@ class Redis implements ISensor{
 		}
 	}
 
+	private static function mb_($a){
+		return (int) ($a / 1024 / 1024);
+	}
 }
 
