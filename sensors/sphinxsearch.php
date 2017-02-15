@@ -1,9 +1,9 @@
 <?php
 namespace monitor\sensors;
-use \PDO;
 
 require_once __DIR__ . "/../interfaces/isensor.php";
-require_once __DIR__ . "/../include/my_curl.php";
+
+require_once __DIR__ . "/../include/pdoconn.php";
 
 class SphinxSearch implements ISensor{
 	const DOCS		= "documents";
@@ -11,16 +11,14 @@ class SphinxSearch implements ISensor{
 	const RAM_BYTES		= "ram_bytes";
 	const CHUNKS		= "chunks";
 
-	private $db_host;
-	private $db_user;
-	private $db_pass;
 	private $db_index;
 
+	private $pdo;
+
 	function __construct($db_index, $db_host = "127.0.0.1", $db_user = "root", $db_pass = ""){
-		$this->db_host  = $db_host;
-		$this->db_user  = $db_user;
-		$this->db_pass  = $db_pass;
 		$this->db_index = $db_index;
+
+		$this->pdo = new \PDOConn("mysql:host=" . $db_host, $db_user, $db_pass);
 	}
 
 	function getAvailableOptions(){
@@ -29,14 +27,11 @@ class SphinxSearch implements ISensor{
 
 	function getValues(){
 		try{
-			$pdo = new PDO("mysql:host=" . $this->db_host, $this->db_user, $this->db_pass, [
-				PDO::ATTR_PERSISTENT	=>	true			,
-				PDO::ATTR_CASE		=>	PDO::CASE_LOWER	,
-			]);
+			$this->pdo->connect();
 
 			$result = [];
 
-			foreach($pdo->query("show index {$this->db_index} status", PDO::FETCH_ASSOC) as $row) {
+			foreach($this->pdo->query("show index {$this->db_index} status") as $row) {
 				// $row = array_change_key_case($row);
 
 				switch( $row["variable_name"] ){

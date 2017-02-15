@@ -1,9 +1,9 @@
 <?php
 namespace monitor\storage;
 
-require_once __DIR__ . "/../classes/pdoconn.php";
-
 require_once __DIR__ . "/../interfaces/istorage.php";
+
+require_once __DIR__ . "/../include/pdoconn.php";
 
 class PDOStorage implements IStorage{
 	const MKEY_DELIMITER = ".";
