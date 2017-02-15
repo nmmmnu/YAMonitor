@@ -29,7 +29,6 @@ class RedisStorage implements IStorage{
 	function store($timestamp, $value){
 		// add uniqueness to the record...
 		$value["_"] = $timestamp;
-print_r($value);
 
 		$key	= $this->prefix;
 		$score	= $timestamp;

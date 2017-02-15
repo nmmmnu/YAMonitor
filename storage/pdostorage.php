@@ -65,7 +65,7 @@ class PDOStorage implements IStorage{
 }
 
 /*
-CREATE TABLE `monitor1` (
+CREATE TABLE `monitor` (
   `host` varchar(32) NOT NULL,
   `day` int(11) unsigned NOT NULL,
   `hour` tinyint(4) unsigned NOT NULL,
